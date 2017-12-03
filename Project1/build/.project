@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>Project1_Path_Planning-Debug@build</name>
+	<name>Project1-Debug@build</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -47,7 +47,7 @@
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.buildLocation</key>
-					<value>/home/magak/udacity/CarND-Path-Planning-Project/build</value>
+					<value>/home/magak/udacity/CarndTerm3/Project1/build</value>
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.useDefaultBuildCmd</key>
@@ -83,7 +83,7 @@
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.build.location</key>
-					<value>/home/magak/udacity/CarND-Path-Planning-Project/build</value>
+					<value>/home/magak/udacity/CarndTerm3/Project1/build</value>
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.autoBuildTarget</key>
@@ -111,7 +111,7 @@
 		<link>
 			<name>[Source directory]</name>
 			<type>2</type>
-			<location>/home/magak/udacity/CarND-Path-Planning-Project/src</location>
+			<location>/home/magak/udacity/CarndTerm3/Project1/src</location>
 		</link>
 		<link>
 			<name>[Subprojects]</name>
@@ -119,9 +119,9 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>[Subprojects]/Project1_Path_Planning</name>
+			<name>[Subprojects]/Project1</name>
 			<type>2</type>
-			<location>/home/magak/udacity/CarND-Path-Planning-Project/src</location>
+			<location>/home/magak/udacity/CarndTerm3/Project1/src</location>
 		</link>
 		<link>
 			<name>[Targets]</name>
@@ -146,7 +146,17 @@
 		<link>
 			<name>[Targets]/[exe] path_planning/Source Files/main.cpp</name>
 			<type>1</type>
-			<location>/home/magak/udacity/CarND-Path-Planning-Project/src/main.cpp</location>
+			<location>/home/magak/udacity/CarndTerm3/Project1/src/main.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] path_planning/Source Files/EgoVehicle.cpp</name>
+			<type>1</type>
+			<location>/home/magak/udacity/CarndTerm3/Project1/src/EgoVehicle.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] path_planning/Source Files/calHelper.cpp</name>
+			<type>1</type>
+			<location>/home/magak/udacity/CarndTerm3/Project1/src/calHelper.cpp</location>
 		</link>
 		<link>
 			<name>[Targets]/[exe] path_planning/Header Files</name>

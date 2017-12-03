@@ -1,4 +1,4 @@
-project(Project1_Path_Planning)
+project(Project1)
 
 cmake_minimum_required (VERSION 3.5)
 
@@ -7,8 +7,7 @@ add_definitions(-std=c++11)
 set(CXX_FLAGS "-Wall")
 set(CMAKE_CXX_FLAGS, "${CXX_FLAGS}")
 
-set(sources ./main.cpp)
-
+set(sources ./main.cpp ./EgoVehicle.cpp ./calHelper.cpp)
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin") 
 

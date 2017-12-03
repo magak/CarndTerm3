@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/magak/udacity/CarND-Path-Planning-Project/src
+CMAKE_SOURCE_DIR = /home/magak/udacity/CarndTerm3/Project1/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/magak/udacity/CarND-Path-Planning-Project/build
+CMAKE_BINARY_DIR = /home/magak/udacity/CarndTerm3/Project1/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/path_planning.dir/depend.make
@@ -58,17 +58,17 @@ include CMakeFiles/path_planning.dir/progress.make
 include CMakeFiles/path_planning.dir/flags.make
 
 CMakeFiles/path_planning.dir/main.cpp.o: CMakeFiles/path_planning.dir/flags.make
-CMakeFiles/path_planning.dir/main.cpp.o: /home/magak/udacity/CarND-Path-Planning-Project/src/main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/magak/udacity/CarND-Path-Planning-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/path_planning.dir/main.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/path_planning.dir/main.cpp.o -c /home/magak/udacity/CarND-Path-Planning-Project/src/main.cpp
+CMakeFiles/path_planning.dir/main.cpp.o: /home/magak/udacity/CarndTerm3/Project1/src/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/magak/udacity/CarndTerm3/Project1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/path_planning.dir/main.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/path_planning.dir/main.cpp.o -c /home/magak/udacity/CarndTerm3/Project1/src/main.cpp
 
 CMakeFiles/path_planning.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/path_planning.dir/main.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/magak/udacity/CarND-Path-Planning-Project/src/main.cpp > CMakeFiles/path_planning.dir/main.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/magak/udacity/CarndTerm3/Project1/src/main.cpp > CMakeFiles/path_planning.dir/main.cpp.i
 
 CMakeFiles/path_planning.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/path_planning.dir/main.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/magak/udacity/CarND-Path-Planning-Project/src/main.cpp -o CMakeFiles/path_planning.dir/main.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/magak/udacity/CarndTerm3/Project1/src/main.cpp -o CMakeFiles/path_planning.dir/main.cpp.s
 
 CMakeFiles/path_planning.dir/main.cpp.o.requires:
 
@@ -81,17 +81,69 @@ CMakeFiles/path_planning.dir/main.cpp.o.provides: CMakeFiles/path_planning.dir/m
 CMakeFiles/path_planning.dir/main.cpp.o.provides.build: CMakeFiles/path_planning.dir/main.cpp.o
 
 
+CMakeFiles/path_planning.dir/EgoVehicle.cpp.o: CMakeFiles/path_planning.dir/flags.make
+CMakeFiles/path_planning.dir/EgoVehicle.cpp.o: /home/magak/udacity/CarndTerm3/Project1/src/EgoVehicle.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/magak/udacity/CarndTerm3/Project1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/path_planning.dir/EgoVehicle.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/path_planning.dir/EgoVehicle.cpp.o -c /home/magak/udacity/CarndTerm3/Project1/src/EgoVehicle.cpp
+
+CMakeFiles/path_planning.dir/EgoVehicle.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/path_planning.dir/EgoVehicle.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/magak/udacity/CarndTerm3/Project1/src/EgoVehicle.cpp > CMakeFiles/path_planning.dir/EgoVehicle.cpp.i
+
+CMakeFiles/path_planning.dir/EgoVehicle.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/path_planning.dir/EgoVehicle.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/magak/udacity/CarndTerm3/Project1/src/EgoVehicle.cpp -o CMakeFiles/path_planning.dir/EgoVehicle.cpp.s
+
+CMakeFiles/path_planning.dir/EgoVehicle.cpp.o.requires:
+
+.PHONY : CMakeFiles/path_planning.dir/EgoVehicle.cpp.o.requires
+
+CMakeFiles/path_planning.dir/EgoVehicle.cpp.o.provides: CMakeFiles/path_planning.dir/EgoVehicle.cpp.o.requires
+	$(MAKE) -f CMakeFiles/path_planning.dir/build.make CMakeFiles/path_planning.dir/EgoVehicle.cpp.o.provides.build
+.PHONY : CMakeFiles/path_planning.dir/EgoVehicle.cpp.o.provides
+
+CMakeFiles/path_planning.dir/EgoVehicle.cpp.o.provides.build: CMakeFiles/path_planning.dir/EgoVehicle.cpp.o
+
+
+CMakeFiles/path_planning.dir/calHelper.cpp.o: CMakeFiles/path_planning.dir/flags.make
+CMakeFiles/path_planning.dir/calHelper.cpp.o: /home/magak/udacity/CarndTerm3/Project1/src/calHelper.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/magak/udacity/CarndTerm3/Project1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/path_planning.dir/calHelper.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/path_planning.dir/calHelper.cpp.o -c /home/magak/udacity/CarndTerm3/Project1/src/calHelper.cpp
+
+CMakeFiles/path_planning.dir/calHelper.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/path_planning.dir/calHelper.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/magak/udacity/CarndTerm3/Project1/src/calHelper.cpp > CMakeFiles/path_planning.dir/calHelper.cpp.i
+
+CMakeFiles/path_planning.dir/calHelper.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/path_planning.dir/calHelper.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/magak/udacity/CarndTerm3/Project1/src/calHelper.cpp -o CMakeFiles/path_planning.dir/calHelper.cpp.s
+
+CMakeFiles/path_planning.dir/calHelper.cpp.o.requires:
+
+.PHONY : CMakeFiles/path_planning.dir/calHelper.cpp.o.requires
+
+CMakeFiles/path_planning.dir/calHelper.cpp.o.provides: CMakeFiles/path_planning.dir/calHelper.cpp.o.requires
+	$(MAKE) -f CMakeFiles/path_planning.dir/build.make CMakeFiles/path_planning.dir/calHelper.cpp.o.provides.build
+.PHONY : CMakeFiles/path_planning.dir/calHelper.cpp.o.provides
+
+CMakeFiles/path_planning.dir/calHelper.cpp.o.provides.build: CMakeFiles/path_planning.dir/calHelper.cpp.o
+
+
 # Object files for target path_planning
 path_planning_OBJECTS = \
-"CMakeFiles/path_planning.dir/main.cpp.o"
+"CMakeFiles/path_planning.dir/main.cpp.o" \
+"CMakeFiles/path_planning.dir/EgoVehicle.cpp.o" \
+"CMakeFiles/path_planning.dir/calHelper.cpp.o"
 
 # External object files for target path_planning
 path_planning_EXTERNAL_OBJECTS =
 
 path_planning: CMakeFiles/path_planning.dir/main.cpp.o
+path_planning: CMakeFiles/path_planning.dir/EgoVehicle.cpp.o
+path_planning: CMakeFiles/path_planning.dir/calHelper.cpp.o
 path_planning: CMakeFiles/path_planning.dir/build.make
 path_planning: CMakeFiles/path_planning.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/magak/udacity/CarND-Path-Planning-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable path_planning"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/magak/udacity/CarndTerm3/Project1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable path_planning"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/path_planning.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -100,6 +152,8 @@ CMakeFiles/path_planning.dir/build: path_planning
 .PHONY : CMakeFiles/path_planning.dir/build
 
 CMakeFiles/path_planning.dir/requires: CMakeFiles/path_planning.dir/main.cpp.o.requires
+CMakeFiles/path_planning.dir/requires: CMakeFiles/path_planning.dir/EgoVehicle.cpp.o.requires
+CMakeFiles/path_planning.dir/requires: CMakeFiles/path_planning.dir/calHelper.cpp.o.requires
 
 .PHONY : CMakeFiles/path_planning.dir/requires
 
@@ -108,6 +162,6 @@ CMakeFiles/path_planning.dir/clean:
 .PHONY : CMakeFiles/path_planning.dir/clean
 
 CMakeFiles/path_planning.dir/depend:
-	cd /home/magak/udacity/CarND-Path-Planning-Project/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/magak/udacity/CarND-Path-Planning-Project/src /home/magak/udacity/CarND-Path-Planning-Project/src /home/magak/udacity/CarND-Path-Planning-Project/build /home/magak/udacity/CarND-Path-Planning-Project/build /home/magak/udacity/CarND-Path-Planning-Project/build/CMakeFiles/path_planning.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/magak/udacity/CarndTerm3/Project1/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/magak/udacity/CarndTerm3/Project1/src /home/magak/udacity/CarndTerm3/Project1/src /home/magak/udacity/CarndTerm3/Project1/build /home/magak/udacity/CarndTerm3/Project1/build /home/magak/udacity/CarndTerm3/Project1/build/CMakeFiles/path_planning.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/path_planning.dir/depend
 

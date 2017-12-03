@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/magak/udacity/CarND-Path-Planning-Project/src
+CMAKE_SOURCE_DIR = /home/magak/udacity/CarndTerm3/Project1/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/magak/udacity/CarND-Path-Planning-Project/build
+CMAKE_BINARY_DIR = /home/magak/udacity/CarndTerm3/Project1/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/magak/udacity/CarND-Path-Planning-Project/build/CMakeFiles /home/magak/udacity/CarND-Path-Planning-Project/build/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/magak/udacity/CarndTerm3/Project1/build/CMakeFiles /home/magak/udacity/CarndTerm3/Project1/build/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/magak/udacity/CarND-Path-Planning-Project/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/magak/udacity/CarndTerm3/Project1/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -123,6 +123,60 @@ path_planning/fast:
 	$(MAKE) -f CMakeFiles/path_planning.dir/build.make CMakeFiles/path_planning.dir/build
 .PHONY : path_planning/fast
 
+EgoVehicle.o: EgoVehicle.cpp.o
+
+.PHONY : EgoVehicle.o
+
+# target to build an object file
+EgoVehicle.cpp.o:
+	$(MAKE) -f CMakeFiles/path_planning.dir/build.make CMakeFiles/path_planning.dir/EgoVehicle.cpp.o
+.PHONY : EgoVehicle.cpp.o
+
+EgoVehicle.i: EgoVehicle.cpp.i
+
+.PHONY : EgoVehicle.i
+
+# target to preprocess a source file
+EgoVehicle.cpp.i:
+	$(MAKE) -f CMakeFiles/path_planning.dir/build.make CMakeFiles/path_planning.dir/EgoVehicle.cpp.i
+.PHONY : EgoVehicle.cpp.i
+
+EgoVehicle.s: EgoVehicle.cpp.s
+
+.PHONY : EgoVehicle.s
+
+# target to generate assembly for a file
+EgoVehicle.cpp.s:
+	$(MAKE) -f CMakeFiles/path_planning.dir/build.make CMakeFiles/path_planning.dir/EgoVehicle.cpp.s
+.PHONY : EgoVehicle.cpp.s
+
+calHelper.o: calHelper.cpp.o
+
+.PHONY : calHelper.o
+
+# target to build an object file
+calHelper.cpp.o:
+	$(MAKE) -f CMakeFiles/path_planning.dir/build.make CMakeFiles/path_planning.dir/calHelper.cpp.o
+.PHONY : calHelper.cpp.o
+
+calHelper.i: calHelper.cpp.i
+
+.PHONY : calHelper.i
+
+# target to preprocess a source file
+calHelper.cpp.i:
+	$(MAKE) -f CMakeFiles/path_planning.dir/build.make CMakeFiles/path_planning.dir/calHelper.cpp.i
+.PHONY : calHelper.cpp.i
+
+calHelper.s: calHelper.cpp.s
+
+.PHONY : calHelper.s
+
+# target to generate assembly for a file
+calHelper.cpp.s:
+	$(MAKE) -f CMakeFiles/path_planning.dir/build.make CMakeFiles/path_planning.dir/calHelper.cpp.s
+.PHONY : calHelper.cpp.s
+
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -159,6 +213,12 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... path_planning"
+	@echo "... EgoVehicle.o"
+	@echo "... EgoVehicle.i"
+	@echo "... EgoVehicle.s"
+	@echo "... calHelper.o"
+	@echo "... calHelper.i"
+	@echo "... calHelper.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
