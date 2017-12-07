@@ -159,6 +159,11 @@
 			<location>/home/magak/udacity/CarndTerm3/Project1/src/calHelper.cpp</location>
 		</link>
 		<link>
+			<name>[Targets]/[exe] path_planning/Source Files/Predictor.cpp</name>
+			<type>1</type>
+			<location>/home/magak/udacity/CarndTerm3/Project1/src/Predictor.cpp</location>
+		</link>
+		<link>
 			<name>[Targets]/[exe] path_planning/Header Files</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>

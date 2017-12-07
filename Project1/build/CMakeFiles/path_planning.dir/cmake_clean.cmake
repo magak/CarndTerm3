@@ -2,6 +2,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/path_planning.dir/main.cpp.o"
   "CMakeFiles/path_planning.dir/EgoVehicle.cpp.o"
   "CMakeFiles/path_planning.dir/calHelper.cpp.o"
+  "CMakeFiles/path_planning.dir/Predictor.cpp.o"
   "path_planning.pdb"
   "path_planning"
 )

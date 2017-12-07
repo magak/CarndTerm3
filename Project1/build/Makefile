@@ -150,6 +150,33 @@ EgoVehicle.cpp.s:
 	$(MAKE) -f CMakeFiles/path_planning.dir/build.make CMakeFiles/path_planning.dir/EgoVehicle.cpp.s
 .PHONY : EgoVehicle.cpp.s
 
+Predictor.o: Predictor.cpp.o
+
+.PHONY : Predictor.o
+
+# target to build an object file
+Predictor.cpp.o:
+	$(MAKE) -f CMakeFiles/path_planning.dir/build.make CMakeFiles/path_planning.dir/Predictor.cpp.o
+.PHONY : Predictor.cpp.o
+
+Predictor.i: Predictor.cpp.i
+
+.PHONY : Predictor.i
+
+# target to preprocess a source file
+Predictor.cpp.i:
+	$(MAKE) -f CMakeFiles/path_planning.dir/build.make CMakeFiles/path_planning.dir/Predictor.cpp.i
+.PHONY : Predictor.cpp.i
+
+Predictor.s: Predictor.cpp.s
+
+.PHONY : Predictor.s
+
+# target to generate assembly for a file
+Predictor.cpp.s:
+	$(MAKE) -f CMakeFiles/path_planning.dir/build.make CMakeFiles/path_planning.dir/Predictor.cpp.s
+.PHONY : Predictor.cpp.s
+
 calHelper.o: calHelper.cpp.o
 
 .PHONY : calHelper.o
@@ -216,6 +243,9 @@ help:
 	@echo "... EgoVehicle.o"
 	@echo "... EgoVehicle.i"
 	@echo "... EgoVehicle.s"
+	@echo "... Predictor.o"
+	@echo "... Predictor.i"
+	@echo "... Predictor.s"
 	@echo "... calHelper.o"
 	@echo "... calHelper.i"
 	@echo "... calHelper.s"

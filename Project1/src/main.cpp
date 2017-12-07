@@ -11,6 +11,7 @@
 #include "spline.h"
 #include "EgoVehicle.h"
 #include "calHelper.h"
+#include "Road.h"
 
 using namespace std;
 using namespace calHelper;
@@ -74,7 +75,11 @@ int main() {
 
   double ref_vel = 0;
 
-  EgoVehicle egoVehicle(1, 4.0, map_waypoints_x, map_waypoints_y, map_waypoints_s, map_waypoints_dx, map_waypoints_dy);
+  ROAD_CONFIGURATION road;
+  road.LaneWidth = 4.0;
+  road.LanesAvailable = 3;
+
+  EgoVehicle egoVehicle(1, road, map_waypoints_x, map_waypoints_y, map_waypoints_s, map_waypoints_dx, map_waypoints_dy);
 
   h.onMessage([&map_waypoints_x,&map_waypoints_y,&map_waypoints_s,&map_waypoints_dx,&map_waypoints_dy,&ref_vel,&lane, &egoVehicle](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length,
                      uWS::OpCode opCode) {
