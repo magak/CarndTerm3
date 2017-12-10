@@ -75,7 +75,7 @@ private:
 	double _targetVel = 0;
 
 	/* max velocty */
-	double _maxVelocity = 49.5;
+	double _maxVelocity = 49.1;
 
 	/* velocty change rate*/
 	double _veloctyChangeRate = .224;
@@ -91,9 +91,10 @@ private:
 
 	double planXHorizon = 30.0;
 
+	double _previousDistanceToCar = -1.0;
+
 	bool _tooClose = false;
 	bool _close = false;
-	bool _lowFar = false;
 
 	vector<double> _map_waypoints_x;
 	vector<double> _map_waypoints_y;
@@ -103,13 +104,13 @@ private:
 
 	TRAJECTORY GetBestTrajectory();
 
-	TRAJECTORY GenerateTrajectoryForState(EgoVehicleState state);
+	TRAJECTORY GenerateTrajectoryForState(EgoVehicleState state, map<int, VEHICLE> &predictions);
 
-	TRAJECTORY GenerateKeepLaneTrajectory();
+	TRAJECTORY GenerateKeepLaneTrajectory(map<int, VEHICLE> &predictions);
 
-	TRAJECTORY GenerateLaneChangeTrajectory(ChangeLaneDirection direction);
+	TRAJECTORY GenerateLaneChangeTrajectory(ChangeLaneDirection direction, map<int, VEHICLE> &predictions);
 
-	TRAJECTORY GenerateTrajectoryForLane(int lane);
+	TRAJECTORY FillTrajectoryPoints(TRAJECTORY &result);
 
 	vector<EgoVehicleState> getSuccessorStates();
 

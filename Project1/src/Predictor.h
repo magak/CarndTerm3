@@ -10,10 +10,19 @@
 
 #include <math.h>
 #include <vector>
+#include <map>
 
 #include "Road.h"
 
 using namespace std;
+
+struct VEHICLE
+{
+	int id;
+	double s;
+	double d;
+	double v;
+};
 
 class Predictor
 {
@@ -29,8 +38,15 @@ public:
 	 */
 	void ProcessData(vector<vector<double>> sensor_fusion);
 
+	map<int, VEHICLE> GetPredictions(double timeHorizon);
+
+	/*
+	VEHICLE getAheadVehicle(int lane, double currentS);
+	VEHICLE getBehindVehicle(int lane, double currentS);
+	*/
+
 private:
-	vector<vector<double>> _lastSensorFusion;
+	map<int, VEHICLE> _lastSensorFusion;
 	ROAD_CONFIGURATION _road;
 };
 
