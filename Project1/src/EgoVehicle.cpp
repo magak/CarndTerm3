@@ -64,6 +64,7 @@ void EgoVehicle::ProcessInputData(
 	_predictor.ProcessData(_sensor_fusion);
 
   	int limit_prev_size = previous_path_x_orig.size();
+  	_prev_size = limit_prev_size;
 
   	if(limit_prev_size > 5)
   		limit_prev_size = 5;
@@ -98,7 +99,7 @@ void EgoVehicle::ProcessInputData(
 
 	double ddiff = abs(_car_d - ((double)_targetLane+0.5)*_road.LaneWidth);
 	//cout << "ddiff=" << ddiff << endl;
-	cout << statesStr[(int)_currentState] << endl;
+	//cout << statesStr[(int)_currentState] << endl;
 }
 
 TRAJECTORY EgoVehicle::GetBestTrajectory()
@@ -108,8 +109,13 @@ TRAJECTORY EgoVehicle::GetBestTrajectory()
 	vector<double> costs;
 	vector<EgoVehicleState> states = getSuccessorStates();
 
-	int prev_size = _previous_path_x.size();
-	map<int, VEHICLE> predictions = _predictor.GetPredictions((double)prev_size*delta_t);
+	map<int, VEHICLE> predictions = _predictor.GetPredictions((double)_prev_size*delta_t);
+
+	//VEHICLE vhAhead0 = getVehicleAhead(0, _car_s, predictions);
+	//VEHICLE vhAhead1 = getVehicleAhead(1, _car_s, predictions);
+	//VEHICLE vhAhead2 = getVehicleAhead(2, _car_s, predictions);
+
+	//cout << vhAhead0.id << " " << vhAhead1.id << " " << vhAhead2.id << endl;
 
 	//TRAJECTORY traj = GenerateKeepLaneTrajectory(predictions);
 	//traj.state = EgoVehicleState::KeepLane;
@@ -545,11 +551,15 @@ VEHICLE EgoVehicle::getVehicleAhead(int lane, double s, map<int, VEHICLE> &predi
 	for(map<int, VEHICLE>::iterator it = predictions.begin(); it != predictions.end(); ++it)
 	{
 		double d = it->second.d;
+		vector<int> vehLanes = it->second.lanes;
 
-		if(it->second.s > s && it->second.s < result.s &&
-				d < (_road.LaneWidth*(lane+1)) && d > (_road.LaneWidth*lane))
+		//if(d < (_road.LaneWidth*(lane+1)) && d > (_road.LaneWidth*lane))
+		if(find(vehLanes.begin(), vehLanes.end(), lane) != vehLanes.end())
 		{
-			result = it->second;
+			if(it->second.s > s && it->second.s < result.s)
+			{
+				result = it->second;
+			}
 		}
 	}
 
@@ -565,11 +575,15 @@ VEHICLE EgoVehicle::getVehicleBehind(int lane, double s, map<int, VEHICLE> &pred
 	for(map<int, VEHICLE>::iterator it = predictions.begin(); it != predictions.end(); ++it)
 	{
 		double d = it->second.d;
+		vector<int> vehLanes = it->second.lanes;
 
-		if(it->second.s < s && it->second.s > result.s &&
-				d < (_road.LaneWidth*(lane+1)) && d > (_road.LaneWidth*lane))
+		//if(d < (_road.LaneWidth*(lane+1)) && d > (_road.LaneWidth*lane))
+		if(find(vehLanes.begin(), vehLanes.end(), lane) != vehLanes.end())
 		{
-			result = it->second;
+			if(it->second.s < s && it->second.s > result.s)
+			{
+				result = it->second;
+			}
 		}
 	}
 
@@ -579,7 +593,7 @@ VEHICLE EgoVehicle::getVehicleBehind(int lane, double s, map<int, VEHICLE> &pred
 double EgoVehicle::getSpeedDiffRateToFollow(double carToFollowS, double s, TRAJECTORY traj)
 {
 	double speedDiffRate = 1.0;
-	if((carToFollowS > s) && ( (carToFollowS-s) < 1.9*_followDistance) )
+	if((carToFollowS > s) && ( (carToFollowS-s) < 1.2*_followDistance) )
 	{
 		double newvcte = _followDistance-(carToFollowS-s);
 

@@ -8,9 +8,12 @@
 #include <math.h>
 #include <vector>
 #include <map>
+#include <iostream>
 
 #include "Predictor.h"
 #include "Road.h"
+
+using namespace std;
 
 Predictor::Predictor(ROAD_CONFIGURATION road)
 {
@@ -41,6 +44,14 @@ void Predictor::ProcessData(vector<vector<double>> sensor_fusion)
 		vh.s = (*it)[5];
 		vh.d = (*it)[6];
 
+		for(int lane = 0; lane < _road.LanesAvailable; lane++)
+		{
+			if(vh.d < (_road.LaneWidth*(lane+1)) && vh.d > (_road.LaneWidth*lane))
+			{
+				vh.lanes.push_back(lane);
+			}
+		}
+
 		_lastSensorFusion[id] = vh;
 	}
 }
@@ -55,6 +66,7 @@ map<int, VEHICLE> Predictor::GetPredictions(double timeHorizon)
 		veh.v = it->second.v;
 		veh.d = it->second.d;
 		veh.s = it->second.s+timeHorizon*it->second.v;
+		veh.lanes = it->second.lanes;
 		result[it->first] = veh;
 	}
 

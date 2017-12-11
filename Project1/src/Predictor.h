@@ -22,6 +22,7 @@ struct VEHICLE
 	double s;
 	double d;
 	double v;
+	vector<int> lanes;
 };
 
 class Predictor

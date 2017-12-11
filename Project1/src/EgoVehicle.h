@@ -76,6 +76,8 @@ private:
 
 	double _targetVel = 0;
 
+	int _prev_size = 0;
+
 	/* max velocty */
 	double _maxVelocity = 49.1;
 	double _minVelocity = 3.1;
@@ -97,9 +99,9 @@ private:
 
 	double _spaceAheadWeight = 0;//0.01;
 
-	double _followDistance = 20;
+	double _followDistance = 15;
 
-	double _safeDistanceBehindForChange = 20;
+	double _safeDistanceBehindForChange = 10;
 
 	double _safeDistanceAheadForChange = 10;
 
