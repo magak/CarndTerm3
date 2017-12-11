@@ -20,18 +20,20 @@
 
 using namespace std;
 
+enum class EgoVehicleState { KeepLane, LaneChangeLeft, LaneChangeRight, LaneChanging};
+enum class ChangeLaneDirection { Left, Right };
+
 struct TRAJECTORY
 {
 	int targetLane;
 	double targetVel;
 	vector<double> next_x_vals;
 	vector<double> next_y_vals;
+	double vcte = 0.0;
 	bool found = false;
+	double maxSpaceAheadAvailable = 0;
+	EgoVehicleState state;
 };
-
-enum class EgoVehicleState { KeepLane, LaneChangeLeft, LaneChangeRight};
-
-enum class ChangeLaneDirection { Left, Right };
 
 const double delta_t = 0.02;
 const double speedMPHRatio = 2.24;
@@ -76,6 +78,9 @@ private:
 
 	/* max velocty */
 	double _maxVelocity = 49.1;
+	double _minVelocity = 3.1;
+
+	double _maxspeedDiffRate = 8.1;
 
 	/* velocty change rate*/
 	double _veloctyChangeRate = .224;
@@ -87,11 +92,22 @@ private:
 	ROAD_CONFIGURATION _road;
 	Predictor _predictor;
 
+	/* weights */
+	double _velocityWeight = 1.0;
+
+	double _spaceAheadWeight = 0;//0.01;
+
+	double _followDistance = 20;
+
+	double _safeDistanceBehindForChange = 20;
+
+	double _safeDistanceAheadForChange = 10;
+
 	int pathPointCount = 50;
 
 	double planXHorizon = 30.0;
 
-	double _previousDistanceToCar = -1.0;
+	double _vcte = 0.0;
 
 	bool _tooClose = false;
 	bool _close = false;
@@ -115,6 +131,18 @@ private:
 	vector<EgoVehicleState> getSuccessorStates();
 
 	double calcCost(TRAJECTORY trajectory);
+
+	VEHICLE getVehicleAhead(int lane, double s, map<int, VEHICLE> &predictions);
+
+	VEHICLE getVehicleBehind(int lane, double s, map<int, VEHICLE> &predictions);
+
+	double getSpeedDiffRateToFollow(double carToFollowS, double s, TRAJECTORY traj);
+
+	double calcVelocity(double speedDiffRate);
+
+	double calcMaxSpaceAheadAvailable(int lane, map<int, VEHICLE> &predictions);
+
+	double calcSpaceAheadAvailable(int lane, map<int, VEHICLE> &predictions);
 };
 
 #endif /* EGOVEHICLE_H_ */
