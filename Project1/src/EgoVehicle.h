@@ -32,6 +32,7 @@ struct TRAJECTORY
 	double vcte = 0.0;
 	bool found = false;
 	double maxSpaceAheadAvailable = 0;
+	double spaceAheadAvailable = 0;
 	EgoVehicleState state;
 };
 
@@ -82,7 +83,7 @@ private:
 	double _maxVelocity = 49.1;
 	double _minVelocity = 3.1;
 
-	double _maxspeedDiffRate = 8.1;
+	double _maxspeedDiffRate = 7.3;
 
 	/* velocty change rate*/
 	double _veloctyChangeRate = .224;
@@ -96,10 +97,13 @@ private:
 
 	/* weights */
 	double _velocityWeight = 1.0;
+	double _maxSpaceAheadWeight = 0.03;
+	double _spaceAheadWeight = 0.01;
+	double _stateWeight = 0.1;
 
-	double _spaceAheadWeight = 0;//0.01;
+	double _defaultSpeedDiffRate = 3.0;
 
-	double _followDistance = 15;
+	double _followDistance = 17;
 
 	double _safeDistanceBehindForChange = 10;
 
@@ -108,6 +112,7 @@ private:
 	int pathPointCount = 50;
 
 	double planXHorizon = 30.0;
+	double farPlanXHorizon = 60.0;
 
 	double _vcte = 0.0;
 
@@ -145,6 +150,8 @@ private:
 	double calcMaxSpaceAheadAvailable(int lane, map<int, VEHICLE> &predictions);
 
 	double calcSpaceAheadAvailable(int lane, map<int, VEHICLE> &predictions);
+
+	string getCostDescription(TRAJECTORY trajectory);
 };
 
 #endif /* EGOVEHICLE_H_ */

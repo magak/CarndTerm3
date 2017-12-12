@@ -8,7 +8,10 @@
 #include <math.h>
 #include <vector>
 #include <map>
+#include <string>
+#include <iterator>
 #include <iostream>
+#include <random>
 
 #include "Predictor.h"
 #include "Road.h"
@@ -50,6 +53,13 @@ void Predictor::ProcessData(vector<vector<double>> sensor_fusion)
 			{
 				vh.lanes.push_back(lane);
 			}
+
+
+			if(  abs( ((double)lane+0.5)*_road.LaneWidth - (double)vh.d ) < 0.62*_road.LaneWidth )
+			{
+				vh.lanes.push_back(lane);
+			}
+
 		}
 
 		_lastSensorFusion[id] = vh;
@@ -72,26 +82,3 @@ map<int, VEHICLE> Predictor::GetPredictions(double timeHorizon)
 
 	return result;
 }
-
-/*
-VEHICLE Predictor::getAheadVehicle(int lane, double currentS)
-{
-	int closest = -1;
-	for(int i = 0; i < _lastSensorFusion.size(); i++)
-	{
-		float d = _lastSensorFusion[i][6];
-		if(d < (_road.LaneWidth*(lane+1)) && d > (_road.LaneWidth*lane))
-		{
-			double vx = _lastSensorFusion[i][3];
-			double vy = _lastSensorFusion[i][4];
-			double check_speed = sqrt(vx*vx+vy*vy);
-			double check_car_s = _lastSensorFusion[i][5];
-		}
-	}
-}
-
-VEHICLE Predictor::getBehindVehicle(int lane, double currentS)
-{
-
-}
-*/

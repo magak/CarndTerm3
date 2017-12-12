@@ -95,8 +95,6 @@ void EgoVehicle::ProcessInputData(
 	_vcte = bestTraj.vcte;
 	_currentState = bestTraj.state;
 
-	string statesStr[] = { "KeepLane", "LaneChangeLeft", "LaneChangeRight", "LaneChanging"};
-
 	double ddiff = abs(_car_d - ((double)_targetLane+0.5)*_road.LaneWidth);
 	//cout << "ddiff=" << ddiff << endl;
 	//cout << statesStr[(int)_currentState] << endl;
@@ -111,8 +109,8 @@ TRAJECTORY EgoVehicle::GetBestTrajectory()
 
 	map<int, VEHICLE> predictions = _predictor.GetPredictions((double)_prev_size*delta_t);
 
-	//VEHICLE vhAhead0 = getVehicleAhead(0, _car_s, predictions);
-	//VEHICLE vhAhead1 = getVehicleAhead(1, _car_s, predictions);
+	VEHICLE vhAhead0 = getVehicleAhead(0, _car_s, predictions);
+	VEHICLE vhAhead1 = getVehicleAhead(1, _car_s, predictions);
 	//VEHICLE vhAhead2 = getVehicleAhead(2, _car_s, predictions);
 
 	//cout << vhAhead0.id << " " << vhAhead1.id << " " << vhAhead2.id << endl;
@@ -120,15 +118,19 @@ TRAJECTORY EgoVehicle::GetBestTrajectory()
 	//TRAJECTORY traj = GenerateKeepLaneTrajectory(predictions);
 	//traj.state = EgoVehicleState::KeepLane;
 	//return traj;
+
 	/*
 	double s1 = calcSpaceAheadAvailable(0, predictions);
 	double s2 = calcSpaceAheadAvailable(1, predictions);
 	double s3 = calcSpaceAheadAvailable(2, predictions);
-	cout << "s1=" << s1 << "	s2=" << s2 << "	s3=" << s3 << endl;
+
+	double m1 = calcMaxSpaceAheadAvailable(0, predictions);
+	double m2 = calcMaxSpaceAheadAvailable(1, predictions);
+	double m3 = calcMaxSpaceAheadAvailable(2, predictions);
+	cout << "s1=" << s1 << "	s2=" << s2 << "	s3=" << s3 << "____" << "	m1=" << m1 << "	m2=" << m2 << "	m3=" << m3 << endl;
 	*/
+
 	string statesStr[] = { "KeepLane", "LaneChangeLeft", "LaneChangeRight", "LaneChanging"};
-
-
 	for(vector<EgoVehicleState>::iterator it = states.begin(); it != states.end(); ++it)
 	{
 		TRAJECTORY trajectory = GenerateTrajectoryForState(*it, predictions);
@@ -137,11 +139,22 @@ TRAJECTORY EgoVehicle::GetBestTrajectory()
 		if(trajectory.found)
 		{
 			trajectory.maxSpaceAheadAvailable = calcMaxSpaceAheadAvailable(trajectory.targetLane, predictions);
+			trajectory.spaceAheadAvailable = calcSpaceAheadAvailable(trajectory.targetLane, predictions);
 			cost = calcCost(trajectory);
 			costs.push_back(cost);
 			trajectories.push_back(trajectory);
 
-			//cout << statesStr[(int)(*it)] << "=" << cost << "	";
+			/*
+			 * some diagnostics
+			double v1 = _velocityWeight*(_maxVelocity-trajectory.targetVel);
+			double v2 = _maxSpaceAheadWeight*(farPlanXHorizon-trajectory.maxSpaceAheadAvailable);
+			double v3 = _spaceAheadWeight*(farPlanXHorizon-trajectory.spaceAheadAvailable);
+			double v4 = _stateWeight*((double)trajectory.state);
+			double vcte = trajectory.vcte;
+
+			cout << statesStr[(int)(*it)] << "=" << cost;
+			cout << "(" << "vcte=" << vcte << ", vel=" << v1 << ", maxSpace=" << v2 << ", space=" << v3 << ", state=" << v4 << ")" << "		";
+			*/
 		}
 	}
 	//cout << " " << endl;
@@ -342,7 +355,7 @@ TRAJECTORY EgoVehicle::GenerateKeepLaneTrajectory(map<int, VEHICLE> &predictions
 	result.targetVel = _targetVel;
 	result.targetLane = _targetLane;
 
-	double speedDiffRateToFollow = 3.0;
+	double speedDiffRateToFollow = _defaultSpeedDiffRate;
 	VEHICLE vhAhead = getVehicleAhead(result.targetLane, _car_s, predictions);
 	if(vhAhead.id != -1)
 	{
@@ -431,6 +444,7 @@ TRAJECTORY EgoVehicle::GenerateLaneChangeTrajectory(ChangeLaneDirection directio
 	VEHICLE vhAhead = getVehicleAhead(result.targetLane, _car_s, predictions);
 	VEHICLE vhBehind = getVehicleBehind(result.targetLane, _car_s, predictions);
 
+	double dsa = abs(0.5);
 	if(vhAhead.id != -1 && abs(vhAhead.s-_car_s) < _safeDistanceAheadForChange)
 	{
 		//cout << dir << " changing is not allowed" << endl;
@@ -539,7 +553,10 @@ vector<EgoVehicleState> EgoVehicle::getSuccessorStates()
 
 double EgoVehicle::calcCost(TRAJECTORY trajectory)
 {
-	return _velocityWeight*(_maxVelocity-trajectory.targetVel) - _spaceAheadWeight*(200-trajectory.maxSpaceAheadAvailable);
+	return _velocityWeight*(_maxVelocity-trajectory.targetVel)
+			+ _maxSpaceAheadWeight*(farPlanXHorizon-trajectory.maxSpaceAheadAvailable)
+			+ _spaceAheadWeight*(farPlanXHorizon-trajectory.spaceAheadAvailable)
+			+ _stateWeight*((double)trajectory.state);
 }
 
 VEHICLE EgoVehicle::getVehicleAhead(int lane, double s, map<int, VEHICLE> &predictions)
@@ -592,12 +609,12 @@ VEHICLE EgoVehicle::getVehicleBehind(int lane, double s, map<int, VEHICLE> &pred
 
 double EgoVehicle::getSpeedDiffRateToFollow(double carToFollowS, double s, TRAJECTORY traj)
 {
-	double speedDiffRate = 1.0;
+	double speedDiffRate = _defaultSpeedDiffRate;
 	if((carToFollowS > s) && ( (carToFollowS-s) < 1.2*_followDistance) )
 	{
 		double newvcte = _followDistance-(carToFollowS-s);
 
-		speedDiffRate = -0.002*newvcte-3.5*(newvcte-_vcte);
+		speedDiffRate = -0.0018*newvcte-3.5*(newvcte-_vcte);
 
 		if(speedDiffRate > _maxspeedDiffRate)
 		{
@@ -682,7 +699,7 @@ double EgoVehicle::calcSpaceAheadAvailable(int lane, map<int, VEHICLE> &predicti
 	}
 	else
 	{
-		result = min(200.0, vhAhead.s - _car_s);
+		result = min(farPlanXHorizon, vhAhead.s - _car_s);
 	}
 
 	return result;

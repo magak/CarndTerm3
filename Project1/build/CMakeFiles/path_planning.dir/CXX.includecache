@@ -827,7 +827,13 @@ vector
 -
 map
 -
+string
+-
+iterator
+-
 iostream
+-
+random
 -
 Predictor.h
 /home/magak/udacity/CarndTerm3/Project1/src/Predictor.h
