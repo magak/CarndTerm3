@@ -18,17 +18,26 @@
 
 using namespace std;
 
+/*
+ * constructor
+ */
 Predictor::Predictor(ROAD_CONFIGURATION road)
 {
 	_road = road;
 }
 
+/*
+ * constructor
+ */
 Predictor::Predictor()
 	:Predictor({4.0, 3})
 {
 
 }
 
+/*
+ * Feeding the data from sensor fusion
+ */
 void Predictor::ProcessData(vector<vector<double>> sensor_fusion)
 {
 	_lastSensorFusion.clear();
@@ -42,6 +51,7 @@ void Predictor::ProcessData(vector<vector<double>> sensor_fusion)
 		double vx = (*it)[3];
 		double vy = (*it)[4];
 
+		// calculating the speed
 		vh.v = sqrt(vx*vx+vy*vy);
 
 		vh.s = (*it)[5];
@@ -54,8 +64,9 @@ void Predictor::ProcessData(vector<vector<double>> sensor_fusion)
 				vh.lanes.push_back(lane);
 			}
 
-
-			if(  abs( ((double)lane+0.5)*_road.LaneWidth - (double)vh.d ) < 0.62*_road.LaneWidth )
+			// if the vehicle is far enough from it's main lane - it also occupies the next lane
+			// e.g. during the change of the lane
+			if(  abs( ((double)lane+0.5)*_road.LaneWidth - (double)vh.d ) < 0.78*_road.LaneWidth )
 			{
 				vh.lanes.push_back(lane);
 			}
@@ -66,6 +77,9 @@ void Predictor::ProcessData(vector<vector<double>> sensor_fusion)
 	}
 }
 
+/*
+ * Returns the predictions of vehicles on the road given the time horizon specified
+ */
 map<int, VEHICLE> Predictor::GetPredictions(double timeHorizon)
 {
 	map<int, VEHICLE> result;
