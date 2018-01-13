@@ -138,3 +138,58 @@ def save_inference_samples(runs_dir, data_dir, sess, image_shape, logits, keep_p
         sess, logits, keep_prob, input_image, os.path.join(data_dir, 'data_road/testing'), image_shape)
     for name, image in image_outputs:
         scipy.misc.imsave(os.path.join(output_dir, name), image)
+
+def rgb2gray(rgb):
+    ### convert image to grayscale
+    img = np.dot(rgb[...,:3], [0.299, 0.587, 0.114])
+    return np.dstack((img, img, img))
+        
+def del_flipped_images(data_dir):
+    # deleting existing flipped images
+    for image_file in glob(os.path.join(data_dir, 'image_2', '*flp*.png')):
+        os.remove(image_file)
+    
+    for image_file in glob(os.path.join(data_dir, 'gt_image_2', '*flp*.png')):
+        os.remove(image_file)
+        
+def gen_flipped_images(data_dir):
+    # Generate flipped images
+    for image_file in glob(os.path.join(data_dir, 'image_2', '*.png')):
+        img = scipy.misc.imread(image_file)
+        img_flp = np.flip(img,1)        
+        
+        img_flp_file = os.path.splitext(image_file)[0]+'flp'+os.path.splitext(image_file)[1]
+        scipy.misc.imsave(img_flp_file, img_flp)
+        
+    for image_file in glob(os.path.join(data_dir, 'gt_image_2', '*.png')):
+        img = scipy.misc.imread(image_file)
+        img_flp = np.flip(img,1)
+
+        img_flp_file = os.path.splitext(image_file)[0]+'flp'+os.path.splitext(image_file)[1]
+        scipy.misc.imsave(img_flp_file, img_flp)
+        
+        #img = scipy.misc.imread(img_flp_file)
+        #print(img.shape)
+
+def del_gray_images(data_dir):
+    # deleting existing gray images
+    for image_file in glob(os.path.join(data_dir, 'image_2', '*gray*.png')):
+        os.remove(image_file)
+    
+    for image_file in glob(os.path.join(data_dir, 'gt_image_2', '*gray*.png')):
+        os.remove(image_file)
+        
+def gen_gray_images(data_dir):
+    # Generate gray images
+    for image_file in glob(os.path.join(data_dir, 'image_2', '*.png')):
+        img = scipy.misc.imread(image_file)
+        img_gray = rgb2gray(img)
+        
+        img_gray_file = os.path.splitext(image_file)[0]+'gray'+os.path.splitext(image_file)[1]
+        scipy.misc.imsave(img_gray_file, img_gray)
+        
+    for image_file in glob(os.path.join(data_dir, 'gt_image_2', '*.png')):
+        img = scipy.misc.imread(image_file)
+
+        img_gray_file = os.path.splitext(image_file)[0]+'gray'+os.path.splitext(image_file)[1]
+        scipy.misc.imsave(img_gray_file, img)
