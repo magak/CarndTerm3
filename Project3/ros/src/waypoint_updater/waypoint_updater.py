@@ -5,6 +5,7 @@ from geometry_msgs.msg import PoseStamped
 from styx_msgs.msg import Lane, Waypoint
 
 import math
+import numpy as np
 
 '''
 This node will publish waypoints from the car's current position to some `x` distance ahead.
@@ -41,12 +42,20 @@ class WaypointUpdater(object):
         rospy.spin()
 
     def pose_cb(self, msg):
-        # TODO: Implement
-        pass
+        self.current_pos = msg
+
+	closest_waypointIndex = get_closest_waypoint()
+	if (self.baseWaypoints is None) or (closest_waypointIndex is None) or len(self.baseWaypoints.waypoints)==0:
+		return	
+
+	lane = Lane()
+        lane.header.frame_id = '/world'
+        lane.header.stamp = rospy.Time(0)
+        lane.waypoints = [self.baseWaypoints[closest_waypointIndex]]
+	self.final_waypoints_pub.publish(lane)
 
     def waypoints_cb(self, waypoints):
-        # TODO: Implement
-        pass
+	self.baseWaypoints = waypoints
 
     def traffic_cb(self, msg):
         # TODO: Callback for /traffic_waypoint message. Implement
@@ -62,6 +71,28 @@ class WaypointUpdater(object):
     def set_waypoint_velocity(self, waypoints, waypoint, velocity):
         waypoints[waypoint].twist.twist.linear.x = velocity
 
+    def get_closest_waypoint(self):
+	if (self.current_pos is None) or (self.baseWaypoints is None) or len(self.baseWaypoints.waypoints)==0:
+		return None
+	
+	closest = np.argmin([distance(self.current_pos.pose.position, item.pose.pose.position) for item in self.baseWaypoints.waypoints])
+	# if the point is behind the current position we will take the next one
+	
+	if(closest < len(self.baseWaypoints.waypoints)-1):
+		pClosest = np.array([self.baseWaypoints.waypoints[closest].pose.pose.position.x
+					,self.baseWaypoints.waypoints[closest].pose.pose.position.y])
+		pAfterClosest = np.array([self.baseWaypoints.waypoints[closest+1].pose.pose.position.x
+					,self.baseWaypoints.waypoints[closest+1].pose.pose.position.y])	
+		pCurrent = np.array([self.current_pos.pose.position.x
+					,self.current_pos.pose.position.y])
+		if(np.dot(pClosest-pCurrent, pAfterClosest-pCurrent)>0):
+			return closest
+		else:
+			return closest+1
+	else:
+		return None
+		
+
     def distance(self, waypoints, wp1, wp2):
         dist = 0
         dl = lambda a, b: math.sqrt((a.x-b.x)**2 + (a.y-b.y)**2  + (a.z-b.z)**2)
@@ -70,6 +101,12 @@ class WaypointUpdater(object):
             wp1 = i
         return dist
 
+    def distance(self, p1, p2):
+        x, y, z = p1.x - p2.x, p1.y - p2.y, p1.z - p2.z
+        return math.sqrt(x*x + y*y + z*z)
+
+    def dot(self, p1, p2):
+        return p1.x * p2.x + p1.y * p2.y 
 
 if __name__ == '__main__':
     try:
