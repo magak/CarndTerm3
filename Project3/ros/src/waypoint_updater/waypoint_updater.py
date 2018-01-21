@@ -22,7 +22,7 @@ as well as to verify your TL classifier.
 TODO (for Yousuf and Aaron): Stopline location for each traffic light.
 '''
 
-LOOKAHEAD_WPS = 200 # Number of waypoints we will publish. You can change this number
+LOOKAHEAD_WPS = 20 # Number of waypoints we will publish. You can change this number
 
 
 class WaypointUpdater(object):
@@ -44,14 +44,20 @@ class WaypointUpdater(object):
     def pose_cb(self, msg):
         self.current_pos = msg
 
-	closest_waypointIndex = get_closest_waypoint()
+	closest_waypointIndex = self.get_closest_waypoint()
 	if (self.baseWaypoints is None) or (closest_waypointIndex is None) or len(self.baseWaypoints.waypoints)==0:
 		return	
 
 	lane = Lane()
         lane.header.frame_id = '/world'
         lane.header.stamp = rospy.Time(0)
-        lane.waypoints = [self.baseWaypoints[closest_waypointIndex]]
+	
+	wayp = self.baseWaypoints.waypoints[closest_waypointIndex:min(len(self.baseWaypoints.waypoints), 
+		closest_waypointIndex+LOOKAHEAD_WPS-1)]
+	#wayp.twist.twist.angular.x = self.current_pos.pose.position.x
+	#wayp.twist.twist.angular.y = self.current_pos.pose.position.y
+
+        lane.waypoints = wayp
 	self.final_waypoints_pub.publish(lane)
 
     def waypoints_cb(self, waypoints):
@@ -75,7 +81,8 @@ class WaypointUpdater(object):
 	if (self.current_pos is None) or (self.baseWaypoints is None) or len(self.baseWaypoints.waypoints)==0:
 		return None
 	
-	closest = np.argmin([distance(self.current_pos.pose.position, item.pose.pose.position) for item in self.baseWaypoints.waypoints])
+	closest = np.argmin([self.distance(self.current_pos.pose.position, item.pose.pose.position) 
+					for item in self.baseWaypoints.waypoints])
 	# if the point is behind the current position we will take the next one
 	
 	if(closest < len(self.baseWaypoints.waypoints)-1):
