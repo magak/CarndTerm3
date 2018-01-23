@@ -7,6 +7,7 @@ import time
 
 GAS_DENSITY = 2.858
 ONE_MPH = 0.44704
+STOP_THRESHOLD_VELOCITY = 0.0001
 
 
 class Controller(object):
@@ -15,6 +16,7 @@ class Controller(object):
 
         self.yaw_controller = YawController(wheel_base, steer_ratio, min_speed, max_lat_accel, max_steer_angle)
 
+	self.min_speed = min_speed
 	self.vehicle_mass = vehicle_mass
 	self.fuel_capacity = fuel_capacity
 	self.brake_deadband = brake_deadband
@@ -22,12 +24,12 @@ class Controller(object):
 	self.accel_limit = accel_limit
 	self.wheel_radius = wheel_radius
 
-	self.low_pass_steer_filter = LowPassFilter(0.6, 1.0)
-	self.low_pass_accel_filter = LowPassFilter(0.6, 1.0)
-	self.low_pass_throttle_filter = LowPassFilter(0.6, 1.0)
+	self.low_pass_steer_filter = LowPassFilter(0.3, 1.0)
+	self.low_pass_accel_filter = LowPassFilter(0.3, 1.0)
+	self.low_pass_throttle_filter = LowPassFilter(0.3, 1.0)
 
-	self.acceleration_controller  = PID(0.3, 5.0, 0.0003, self.decel_limit, self.accel_limit)
-	self.throttle_controller = PID(0.3, 5.0, 0.0003, 0.0, 1.0)	
+	self.acceleration_controller  = PID(0.09, 0.00005, 0.007, self.decel_limit, self.accel_limit)
+	self.throttle_controller = PID(0.4, 0.05, 0.0, 0.0, 1.0)	
 	
 	self.throttle_controller.reset()
 	self.acceleration_controller.reset()
@@ -52,9 +54,9 @@ class Controller(object):
 	throttle = 0.0
 	brake = 0.0
 
-	acceleration = self.low_pass_accel_filter.filt(self.acceleration_controller.step((linear_velocity-current_velocity)/sample_time, sample_time))
+	acceleration = self.low_pass_accel_filter.filt(self.acceleration_controller.step(linear_velocity-current_velocity, sample_time))
 
-	rospy.loginfo(str(acceleration))
+	#rospy.loginfo(str(acceleration))
 	
 	if(acceleration < 0.0):
 		# braking
@@ -73,5 +75,12 @@ class Controller(object):
 	
 	#throttle = self.throttle_controller.step(linear_velocity-current_velocity, sample_time)
 	#rospy.loginfo("throttle= "+str(throttle)+" brake= "+str(brake)+" steering="+str(steering))
+
+	rospy.loginfo(str(throttle))
+
+	# Holding
+	if(linear_velocity < STOP_THRESHOLD_VELOCITY and current_velocity < self.min_speed):
+		brake = (self.vehicle_mass + self.fuel_capacity*GAS_DENSITY)*0.3*self.wheel_radius
+		throttle = 0
 
         return throttle, brake, steering
