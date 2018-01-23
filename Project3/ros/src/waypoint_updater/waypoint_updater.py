@@ -63,6 +63,16 @@ class WaypointUpdater(object):
     def waypoints_cb(self, waypoints):
 	self.baseWaypoints = waypoints
 
+	velocity = self.get_waypoint_velocity(self.baseWaypoints.waypoints[650])
+	for i in range(650, len(self.baseWaypoints.waypoints)):
+		velocity = max(velocity - 0.8, 0.0)
+		self.set_waypoint_velocity(self.baseWaypoints.waypoints, i, velocity)
+
+	#for i in range(len(self.baseWaypoints.waypoints)):
+	#	velocity = 0.0
+	#	self.set_waypoint_velocity(self.baseWaypoints.waypoints, i, velocity)
+		
+
     def traffic_cb(self, msg):
         # TODO: Callback for /traffic_waypoint message. Implement
         pass

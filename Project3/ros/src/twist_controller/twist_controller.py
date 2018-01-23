@@ -36,11 +36,21 @@ class Controller(object):
 	
 	self.lastControlTime = None
 	self.lastVelocity = 0.0
+	self.dbw_status = True
 
     def control(self, linear_velocity, angular_velocity, current_velocity, dbw_status):
         # TODO: Change the arg, kwarg list to suit your needs
         # Return throttle, brake, steer
-	
+
+	# control is taken by driver
+	if not dbw_status:
+		if self.dbw_status:
+			self.throttle_controller.reset()
+			self.acceleration_controller.reset()
+		self.dbw_status = False
+		return None, None, None
+		
+
 	steering = self.yaw_controller.get_steering(linear_velocity, self.low_pass_steer_filter.filt(angular_velocity), current_velocity)
 
 	current_time = time.time()
