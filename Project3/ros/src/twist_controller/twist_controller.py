@@ -29,7 +29,8 @@ class Controller(object):
 	self.low_pass_throttle_filter = LowPassFilter(0.3, 1.0)
 
 	self.acceleration_controller  = PID(0.09, 0.00005, 0.007, self.decel_limit, self.accel_limit)
-	self.throttle_controller = PID(0.4, 0.05, 0.0, 0.0, 1.0)	
+	self.throttle_controller = PID(0.4, 0.05, 0.0, 0.0, 1.0)
+	self.steering_controller = PID(2.0, 0.0005, 0.01, -10.0, 10.0)
 	
 	self.throttle_controller.reset()
 	self.acceleration_controller.reset()
@@ -47,11 +48,10 @@ class Controller(object):
 		if self.dbw_status:
 			self.throttle_controller.reset()
 			self.acceleration_controller.reset()
+			self.steering_controller.reset()
 		self.dbw_status = False
 		return None, None, None
 		
-
-	steering = self.yaw_controller.get_steering(linear_velocity, self.low_pass_steer_filter.filt(angular_velocity), current_velocity)
 
 	current_time = time.time()
 	if self.lastControlTime is None:
@@ -63,6 +63,11 @@ class Controller(object):
 	
 	throttle = 0.0
 	brake = 0.0
+
+#	steering = self.yaw_controller.get_steering(abs(linear_velocity), self.low_pass_steer_filter.filt(angular_velocity), current_velocity)
+	steeringInit = self.yaw_controller.get_steering(abs(linear_velocity), angular_velocity, current_velocity)
+	steering = self.low_pass_steer_filter.filt(self.steering_controller.step(steeringInit, sample_time))
+	#rospy.loginfo("init= "+str(steeringInit)+" out= "+str(steering))
 
 	acceleration = self.low_pass_accel_filter.filt(self.acceleration_controller.step(linear_velocity-current_velocity, sample_time))
 
@@ -86,7 +91,7 @@ class Controller(object):
 	#throttle = self.throttle_controller.step(linear_velocity-current_velocity, sample_time)
 	#rospy.loginfo("throttle= "+str(throttle)+" brake= "+str(brake)+" steering="+str(steering))
 
-	rospy.loginfo(str(throttle))
+	#rospy.loginfo(str(throttle))
 
 	# Holding
 	if(linear_velocity < STOP_THRESHOLD_VELOCITY and current_velocity < self.min_speed):
